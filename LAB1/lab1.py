@@ -6,7 +6,7 @@ object1 = model_ai.ModelAI("Name1",1.0)
 object2 = model_ai.ModelAI("Name2",2.0)
 object3 = model_ai.ModelAI("Name3",3.0)
 print(object1.ile_modeli())
-objectFromFile = model_ai.ModelAI.z_pliku("model.json")
+objectFromFile = model_ai.ModelAI.z_pliku("LAB1/model.json")
 print(object1.ile_modeli())
 print(objectFromFile.modelName)
 
