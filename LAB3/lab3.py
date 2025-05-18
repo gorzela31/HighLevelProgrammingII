@@ -1,0 +1,1 @@
+#python -m flake8 "c:\Users\Gorze\OneDrive - Uniwersytet Łódzki\Semestr2_OneDrive\HighLevelProgrammingII\HighLevelProgrammingII\LAB3\biblioteka.py"
