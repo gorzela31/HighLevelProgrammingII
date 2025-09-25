@@ -23,7 +23,6 @@ Przepiśnik to taka osobista książka kucharska w przeglądarce.
 2. Stwórz i aktywuj wirtualne środowisko:
    ```bash
    python -m venv .venv
-   # Windows:
    .venv\Scripts\activate
    ```
 

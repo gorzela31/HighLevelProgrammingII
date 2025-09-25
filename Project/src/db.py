@@ -116,23 +116,26 @@ class RecipeRepository:
         if r.id is None:
             raise ValueError("Recipe must have id for update.")
         with self.db.connect() as conn:
-            conn.execute(
-                """
-                UPDATE recipes
-                SET title=?, ingredients=?, instructions=?, "
-                "prep_time_minutes=?, tags=?, favorite=?
-                WHERE id=?
-                """,
-                (
-                    r.title,
-                    r.ingredients,
-                    r.instructions,
-                    r.prep_time_minutes,
-                    r.tags,
-                    1 if r.favorite else 0,
-                    r.id,
-                ),
+            sql = (
+                "UPDATE recipes SET "
+                "title = ?, "
+                "ingredients = ?, "
+                "instructions = ?, "
+                "prep_time_minutes = ?, "
+                "tags = ?, "
+                "favorite = ? "
+                "WHERE id = ?"
             )
+            params = (
+                r.title,
+                r.ingredients,
+                r.instructions,
+                r.prep_time_minutes,
+                r.tags,
+                1 if r.favorite else 0,
+                r.id,
+            )
+            conn.execute(sql, params)
             conn.commit()
 
     def search(
