@@ -16,8 +16,8 @@ Przepiśnik to taka osobista książka kucharska w przeglądarce.
 
 1. Sklonuj repozytorium (albo pobierz zipa):
    ```bash
-   git clone https://github.com/twoj-login/przepisnik.git
-   cd przepisnik
+   git clone https://github.com/gorzela31/HighLevelProgrammingII.git
+   cd HighLevelProgrammingII/Project
    ```
 
 2. Stwórz i aktywuj wirtualne środowisko:
@@ -25,8 +25,6 @@ Przepiśnik to taka osobista książka kucharska w przeglądarce.
    python -m venv .venv
    # Windows:
    .venv\Scripts\activate
-   # Linux/Mac:
-   source .venv/bin/activate
    ```
 
 3. Zainstaluj zależności:
