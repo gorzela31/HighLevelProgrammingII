@@ -1,5 +1,3 @@
-"""Domain models for Przepisnik."""
-
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Optional
@@ -7,7 +5,7 @@ from typing import Optional
 
 @dataclass
 class Recipe:
-    """Represents a cooking recipe."""
+    """Model przepisu kulinarnego."""
 
     id: Optional[int]
     title: str
@@ -31,7 +29,7 @@ class Recipe:
         tags: str = "",
         favorite: bool = False,
     ) -> "Recipe":
-        """Factory with simple validation."""
+        """Tworzy nowy obiekt `Recipe`, walidując dane wejściowe."""
         title = (title or "").strip()
         if not title:
             raise ValueError("Tytuł jest wymagany.")

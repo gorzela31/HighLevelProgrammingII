@@ -1,5 +1,3 @@
-"""Streamlit UI for Przepiśnik."""
-
 import streamlit as st
 import random
 from src.models import Recipe
@@ -29,6 +27,7 @@ service = get_recipe_service(db_path="przepisnik.db")
 
 
 def _safe_rerun():
+    """Bezpiecznie odświeża aplikację."""
     try:
         if hasattr(st, "rerun"):
             st.rerun()
@@ -52,7 +51,7 @@ page = st.sidebar.radio(
 
 
 def recipe_card(r: Recipe):
-    """Render single recipe card with small edit button and inline form."""
+    """Renderuje kartę pojedynczego przepisu wraz z akcjami."""
     with st.container():
         st.subheader(r.title)
         col1, col2, col3, col4 = st.columns([2, 1, 1, 1])

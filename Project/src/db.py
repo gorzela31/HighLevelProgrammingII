@@ -4,15 +4,18 @@ from .models import Recipe
 
 
 class Database:
-    """SQLite database wrapper."""
+    """Wrapper na bazę SQLite."""
 
     def __init__(self, path: str):
+        """Inicjalizuje obiekt bazy."""
         self.path = path
 
     def connect(self) -> sqlite3.Connection:
+        """Zwraca nowe połączenie do bazy."""
         return sqlite3.connect(self.path)
 
     def init_schema(self) -> None:
+        """Tworzy schemat tabeli `recipes`, jeśli nie istnieje."""
         with self.connect() as conn:
             conn.execute(
                 """
@@ -32,12 +35,14 @@ class Database:
 
 
 class RecipeRepository:
-    """Repository for Recipe entities."""
+    """Repozytorium odpowiedzialne za operacje na przepisach."""
 
     def __init__(self, db: Database):
+        """Tworzy repozytorium oparte o podaną bazę"""
         self.db = db
 
     def add(self, r: Recipe) -> int:
+        """Dodaje nowy przepis i zwraca jego ID."""
         with self.db.connect() as conn:
             cur = conn.execute(
                 """
@@ -67,6 +72,7 @@ class RecipeRepository:
             return int(cur.lastrowid)
 
     def get(self, recipe_id: int) -> Optional[Recipe]:
+        """Pobiera przepis po ID."""
         with self.db.connect() as conn:
             cur = conn.execute(
                 "SELECT id, title, ingredients, instructions, "
@@ -78,6 +84,7 @@ class RecipeRepository:
             return self._row_to_recipe(row) if row else None
 
     def list_all(self) -> List[Recipe]:
+        """Zwraca wszystkie przepisy, najnowsze pierwsze."""
         with self.db.connect() as conn:
             cur = conn.execute(
                 "SELECT id, title, ingredients, "
@@ -89,6 +96,7 @@ class RecipeRepository:
         return [self._row_to_recipe(r) for r in rows]
 
     def list_favorites(self) -> List[Recipe]:
+        """Zwraca wszystkie przepisy oznaczone jako ulubione."""
         with self.db.connect() as conn:
             cur = conn.execute(
                 "SELECT id, title, ingredients, "
@@ -100,6 +108,7 @@ class RecipeRepository:
         return [self._row_to_recipe(r) for r in rows]
 
     def set_favorite(self, recipe_id: int, fav: bool) -> None:
+        """Ustawia/usuwa flagę ulubionego dla przepisu."""
         with self.db.connect() as conn:
             conn.execute(
                 "UPDATE recipes SET favorite = ? WHERE id = ?",
@@ -108,11 +117,13 @@ class RecipeRepository:
             conn.commit()
 
     def delete(self, recipe_id: int) -> None:
+        """Usuwa przepis po ID."""
         with self.db.connect() as conn:
             conn.execute("DELETE FROM recipes WHERE id = ?", (recipe_id,))
             conn.commit()
 
     def update(self, r: Recipe) -> None:
+        """Aktualizuje pełne dane przepisu."""
         if r.id is None:
             raise ValueError("Recipe must have id for update.")
         with self.db.connect() as conn:
@@ -145,6 +156,7 @@ class RecipeRepository:
         only_fav: bool = False,
         tag: Optional[str] = None,
     ) -> list[Recipe]:
+        """Wyszukuje przepisy wg tekstu, czasu, ulubionych i/lub tagu."""
         q = (q or "").strip()
         params = []
         clauses = []
@@ -177,11 +189,13 @@ class RecipeRepository:
         return [self._row_to_recipe(r) for r in rows]
 
     def count(self) -> int:
+        """Zwraca liczbę wszystkich przepisów."""
         with self.db.connect() as conn:
             cur = conn.execute("SELECT COUNT(*) FROM recipes")
             return int(cur.fetchone()[0])
 
     def count_favorites(self) -> int:
+        """Zwraca liczbę przepisów oznaczonych jako ulubione."""
         with self.db.connect() as conn:
             cur = conn.execute(
                 "SELECT COUNT(*) FROM recipes WHERE favorite = 1"
@@ -189,6 +203,7 @@ class RecipeRepository:
             return int(cur.fetchone()[0])
 
     def avg_prep_time(self) -> Optional[float]:
+        """Zwraca średni czas przygotowania (minuty), jeśli istnieje."""
         with self.db.connect() as conn:
             cur = conn.execute(
                 "SELECT AVG(prep_time_minutes) FROM recipes "
@@ -214,6 +229,7 @@ class RecipeRepository:
 
     @staticmethod
     def _row_to_recipe(row) -> Recipe:
+        """Mapuje krotkę z bazy na obiekt `Recipe`."""
         return Recipe(
             id=row[0],
             title=row[1],
