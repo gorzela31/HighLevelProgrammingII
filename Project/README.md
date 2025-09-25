@@ -39,12 +39,18 @@ Przepiśnik to taka osobista książka kucharska w przeglądarce.
 
 ## Jak zbudować i uruchomić w Dockerze
 
-1. Zbuduj obraz:
+1. Sklonuj repozytorium (albo pobierz zipa):
+   ```bash
+   git clone https://github.com/gorzela31/HighLevelProgrammingII.git
+   cd HighLevelProgrammingII/Project
+   ```
+
+2. Zbuduj obraz:
    ```bash
    docker build -t przepisnik .
    ```
 
-2. Uruchom kontener:
+3. Uruchom kontener:
    ```bash
    docker run --rm -p 8501:8501 przepisnik
    ```
